@@ -1,3 +1,7 @@
 {
-    "githubAuthToken": ""
+
+    "githubInfo": {
+        "name": "Prodigy Source Bot",
+        "email": "sorrythisisafakeemail@gmail.com"
+    }
 }
