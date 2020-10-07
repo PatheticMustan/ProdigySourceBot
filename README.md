@@ -8,7 +8,7 @@ Run at an interval to check if Prodigy's version updated. If so, do two things:
 2. Post an update on Twitter (optional).
 3. Upload the game.min.js to the Github.
     - First, check if the version has a file in ProdigySource.
-    - If so, fetch the latest file
-    - Beautify said file
-    - Upload to Github
+    - If so, fetch the latest file;
+        - Beautify said file
+        - Upload to Github
     - Post an embed with the version info AND source link in a super secret admin channel
