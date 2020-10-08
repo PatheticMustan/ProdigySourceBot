@@ -1,7 +1,14 @@
 {
+    "tokens": {
+        "github": "eeeeeeeeeeeeeeeeeee"
+    },
 
-    "githubInfo": {
-        "name": "Prodigy Source Bot",
-        "email": "sorrythisisafakeemail@gmail.com"
+    "github": {
+        "authorInfo": {
+            "name": "Prodigy Source Bot", "email": "sorrythisisafakeemail@gmail.com"
+        },
+        "repoInfo": {
+            "owner": "PatheticMustan", "repo": "ProdigySource"
+        }
     }
 }
