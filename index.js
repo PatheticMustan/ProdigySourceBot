@@ -1,11 +1,15 @@
-const { Octokit } = require("@octokit/rest");
-const fs = require("fs");
+// const fs = require("fs");
 const fetch = require('node-fetch');
-const Discord = require("discord.js");
 const config = require("./config.json");
+
+const { Octokit } = require("@octokit/rest");
 const octokit = new Octokit({
     auth: config.tokens.github
 });
+const Discord = require("discord.js");
+const { js } = require("js-beautify");
+
+
 
 const getProdigyStatus = async () => {
     return await (await fetch("https://api.prodigygame.com/game-api/status")).json();
@@ -62,15 +66,17 @@ const main = async () => {
         config.discord.webhookToken
     );
 
-    const sendNew = async (name, color, lastValue, newValue) => {
-        await hook.send({
-            "title": `New Prodigy ${name}`,
-            "color": color,
-            "fields": [
-                { "name": `Last ${name}`, "value": lastValue, "inline": true },
-                { "name": `New ${name}`, "value": newValue, "inline": true }
-            ]
-        });
+    const createEmbedObject = (name, color, lastValue, newValue) => {
+        return {
+            "embeds": [{
+                "title": `New Prodigy ${name}`,
+                "color": color,
+                "fields": [
+                    { "name": `Last ${name}`, "value": lastValue, "inline": true },
+                    { "name": `New ${name}`, "value": newValue, "inline": true }
+                ]
+            }]
+        };
     }
 
     // taken from Prodigy-Hacking/Redirector/index.ts#L20-L31
@@ -89,29 +95,44 @@ const main = async () => {
         last.educationDataVersion = last.educationDataVersion?? educationDataVersion;
         last.educationFrontendVersion = last.educationFrontendVersion?? educationFrontendVersion;
 
+        const embeds = [];
         
         if (last.version !== version) {
-            // 11343081 #AD14E9, why is her name everywhere
-            sendNew("Version", 11343081, last.version, version);
+            // 11343081 #AD14E9, no matter where I go, I see her name
+            embeds.push(createEmbedObject("Version", 11343081, last.version, version));
+
+            console.log(`Prodigy updated to version ${version}.`);
+            const newCode = (await (await fetch("https://code.prodigygame.com/code/${version}/game.min.js")).text())
+            const beautified = js(newCode);
+
+            githubFileUpload(`${version}.js`, beautified);
+            
+            // add twitter bot
         }
 
         if (last.build !== build) {
             // 1370388 #14e914
-            sendNew("Build", 1370388, last.build, build);
+            embeds.push(createEmbedObject("Build", 1370388, last.build, build));
         }
 
         if (last.educationDataVersion !== educationDataVersion) {
             // 15300372 #e97714
-            sendNew("Education Data Version", 15300372, last.educationDataVersion, educationDataVersion);
+            embeds.push(createEmbedObject("Education Data Version", 15300372, last.educationDataVersion, educationDataVersion));
         }
 
         if (last.educationFrontendVersion !== educationFrontendVersion) {
             // 1366249 #14d8e9
-            sendNew("Education Frontend Version", 1366249, last.educationFrontendVersion, educationFrontendVersion);
+            embeds.push(createEmbedObject("Education Frontend Version", 1366249, last.educationFrontendVersion, educationFrontendVersion));
+        }
+
+        // if embeds > 0...
+        if (embeds.length) {
+            await hook.send("", {
+                embeds: embeds
+            });
         }
     }, 10 * 60 * 1000);
-
-    // githubFileUpload()
 }
 
-main();
+// main();
+console.log(js("function add(a,b,c,          d, e,f,g){return a+b+c+d+e + f + g}"))

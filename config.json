@@ -10,5 +10,10 @@
         "repoInfo": {
             "owner": "PatheticMustan", "repo": "ProdigySource"
         }
+    },
+
+    "discord": {
+        "webhookID": "eeeeeeeeeeeeeeeeeeeeeee",
+        "webhookToken": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     }
 }
