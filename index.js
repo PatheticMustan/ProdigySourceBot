@@ -2,15 +2,9 @@
 const fetch = require("node-fetch");
 
 const signale = require("signale-logger");
-signale.config({
-    displayFilename: true,
-    displayTimestamp: true,
-    displayDate: false
-}); 
 const logger = signale.scope("MN");
 
-
-const config = require("./config.json");
+const env = require('dotenv').config().parsed;
 
 const Discord = require("discord.js");
 const { js } = require("js-beautify");
@@ -29,8 +23,8 @@ const main = async () => {
     }
 
     const hook = new Discord.WebhookClient(
-        config.discord.webhookID,
-        config.discord.webhookToken
+        env.discordWebhookID,
+        env.discordWebhookToken
     );
 
     const createEmbedObject = (name, color, lastValue, newValue) => ({

@@ -1,8 +1,4 @@
 {
-    "tokens": {
-        "github": "d8ae2b0e5cbcf788eb7568a0df07b6176584b78f"
-    },
-
     "github": {
         "authorInfo": {
             "name": "Prodigy Source Bot", "email": "patheticmustan@gmail.com"
@@ -10,10 +6,5 @@
         "repoInfo": {
             "owner": "PatheticMustan", "repo": "ProdigySource"
         }
-    },
-
-    "discord": {
-        "webhookID": "769424024958271518",
-        "webhookToken": "i2iwqjeMRQ9dSoR1j1nYPecH43hCDSpkSL2ExUEMW27UKHEUOx3HrK2J2b_KbWqHjRnj"
     }
 }

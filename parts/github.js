@@ -1,11 +1,12 @@
 const config = require("../config.json");
+const env = require('dotenv').config().parsed;
 
 const signale = require("signale-logger");
 const logger = signale.scope("GH");
 
 const { Octokit } = require("@octokit/rest");
 const octokit = new Octokit({
-    auth: config.tokens.github
+    auth: env.githubToken
 });
 
 const githubFileUpload = async (fileName, content, commitMessage) => {
