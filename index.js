@@ -1,23 +1,22 @@
 // const fs = require("fs");
 const fetch = require("node-fetch");
 
-const signale = require('signale-logger');
-const logger = signale.scope("Main");
+const signale = require("signale-logger");
+signale.config({
+    displayFilename: true,
+    displayTimestamp: true,
+    displayDate: false
+}); 
+const logger = signale.scope("MN");
+
 
 const config = require("./config.json");
 
 const Discord = require("discord.js");
 const { js } = require("js-beautify");
 
-const { githubCheckIfUploaded, githubFileUpload } = require("./parts/github");
-
-const getProdigyStatus = async () => {
-    return await (await fetch("https://api.prodigygame.com/game-api/status")).json();
-}
-
-const getProdigyEducationStatus = async () => {
-    return await (await fetch("https://api.prodigygame.com/education-api/status")).json();
-}
+const { githubFileUpload } = require("./parts/github");
+const { getProdigyStatus, getProdigyEducationStatus } = require("./parts/prodigy");
 
 
 
@@ -41,7 +40,7 @@ const main = async () => {
     });
 
     // taken from Prodigy-Hacking/Redirector/index.ts#L20-L31
-    //const interval = setInterval(async () => {
+    const interval = setInterval(async () => {
         const status = await getProdigyStatus();
         const educationStatus = await getProdigyEducationStatus()
 
@@ -58,28 +57,25 @@ const main = async () => {
 
         const embeds = [];
         
-        if (true || last.version !== version) {
+        if (last.version !== version) {
             // 11343081 #AD14E9, no matter where I go, I see her name
             embeds.push(createEmbedObject("Version", 11343081, last.version, version));
 
             logger.log("\n\n\n");
-            logger.success("New Prodigy version detected");
+            logger.success(`Prodigy Updated: ${last.version} --> ${version}`);
+            
+            const gameMin = await fetch(`https://code.prodigygame.com/code/${version}/game.min.js`);
 
-            if (!await githubCheckIfUploaded(`${version}.js`)) {
-                logger.pending(`Fetching ${version} game.min.js`);
-                const gameMin = await fetch(`https://code.prodigygame.com/code/${version}/game.min.js`);
+            if (gameMin.ok) {
+                logger.success("Successfully fetched, beautifying");
+                const beautified = js(await gameMin.text());
 
-                if (gameMin.ok) {
-                    logger.success("Successfully fetched, beautify-ing");
+                logger.success("Beautified, uploading to Github")
+                githubFileUpload(`${version}.js`, beautified, `Updated from ${last.version} to ${version}`);
 
-                    const beautified = js(await gameMin.text());
-
-                    githubFileUpload(`${version}.js`, beautified, `Updated from ${last.version} to ${version}`);
-                    
-                    // TODO: add twitter bot
-                } else {
-                    logger.fatal(`Unsuccessfully fetched with error ${gameMin.status}`);
-                }
+                // TODO: add twitter bot
+            } else {
+                logger.fatal(`Unsuccessfully fetched with error ${gameMin.status}`);
             }
         }
 
@@ -104,10 +100,10 @@ const main = async () => {
                 embeds: embeds
             });
         }
-    //}, 10 * 60 * 1000);
+    }, 10 * 60 * 1000);
 }
 
 main();
 
 // testing zone
-//(async () => {})();
+//(async () => {})()
