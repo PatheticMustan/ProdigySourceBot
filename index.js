@@ -71,21 +71,26 @@ const main = async () => {
         } else {
             logger.fatal(`Unsuccessfully fetched with error ${gameMin.status}`);
         }
+
+        last.version = version;
     }
 
     if (last.build !== build) {
         // 1370388 #14e914
         embeds.push(createEmbedObject("Build", 1370388, last.build, build));
+        last.build = build;
     }
 
     if (last.educationDataVersion !== educationDataVersion) {
         // 15300372 #e97714
         embeds.push(createEmbedObject("Education Data", 15300372, last.educationDataVersion, educationDataVersion));
+        last.educationDataVersion = educationDataVersion;
     }
 
     if (last.educationFrontendVersion !== educationFrontendVersion) {
         // 1366249 #14d8e9
         embeds.push(createEmbedObject("Education Frontend", 1366249, last.educationFrontendVersion, educationFrontendVersion));
+        last.educationFrontendVersion = educationFrontendVersion;
     }
 
     // if embeds > 0...
