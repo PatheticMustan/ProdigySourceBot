@@ -33,8 +33,15 @@ const main = async () => {
     // taken from Prodigy-Hacking/Redirector/index.ts#L20-L31
     logger.log("new run");
     
-    const status = await (await fetch("https://api.prodigygame.com/game-api/status")).json();
-    const educationStatus = await (await fetch("https://api.prodigygame.com/education-api/status")).json();;
+    let status,
+        educationStatus;
+
+    try {
+        status = await (await fetch("https://api.prodigygame.com/game-api/status")).json();
+        educationStatus = await (await fetch("https://api.prodigygame.com/education-api/status")).json();
+    } catch (e) {
+        console.fatal(e);
+    }
 
     // console.log(status);
 
