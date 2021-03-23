@@ -12,3 +12,7 @@ Run at an interval to check if Prodigy's version updated. If so, do two things:
         - Beautify said file
         - Upload to Github
     - Post an embed with the version info AND source link in a super secret admin channel
+
+Right now I'm working on posting the updates to twitter.
+
+![image](https://user-images.githubusercontent.com/35382971/112174126-896ad000-8bcc-11eb-9684-2bde1599f9cd.png)
