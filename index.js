@@ -40,7 +40,7 @@ const main = async () => {
         status = await (await fetch("https://api.prodigygame.com/game-api/status")).json();
         educationStatus = await (await fetch("https://api.prodigygame.com/education-api/status")).json();
     } catch (e) {
-        console.fatal(e);
+        logger.fatal(e);
     }
 
     // console.log(status);
@@ -114,7 +114,7 @@ const interval = setInterval(async () => {
     pending = true;
     await main();
     pending = false;
-}, 60 * 1000);
+}, 10 * 60 * 1000); // runs every 10 minutes
 
 // testing zone
 //(async () => {})()
