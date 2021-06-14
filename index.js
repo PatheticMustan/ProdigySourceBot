@@ -37,18 +37,24 @@ const main = async () => {
         educationStatus;
 
     try {
-        status = await (await fetch("https://api.prodigygame.com/game-api/status")).json();
+        status = JSON.parse(
+                (await (
+                    await fetch("https://play.prodigygame.com/play")
+                ).text()).match(/(?<=gameStatusDataStr = ').+(?=')/)[0]
+            );
         educationStatus = await (await fetch("https://api.prodigygame.com/education-api/status")).json();
     } catch (e) {
         logger.fatal(e);
     }
 
-    // console.log(status);
+    logger.log(status);
 
-    const version = status?.data?.gameClientVersion;
-    const build = status?.data?.prodigyGameFlags?.gameDataVersion;
+    const version = status?.gameClientVersion;
+    const build = status?.prodigyGameFlags?.gameDataVersion;
     const educationDataVersion = educationStatus?.data?.educationDataVersion;
     const educationFrontendVersion = educationStatus?.data?.educationFrontendVersion;
+
+    logger.log(version, build, educationDataVersion, educationFrontendVersion);
 
     // if it's undefined, set it...
     last.version = last.version?? version;
@@ -65,6 +71,7 @@ const main = async () => {
         logger.log("\n\n\n");
         logger.success(`Prodigy Updated: ${last.version} --> ${version}`);
         
+        // https://code.prodigygame.com/code/4-13-0/game.min.js
         const gameMin = await fetch(`https://code.prodigygame.com/code/${version}/game.min.js`);
 
         if (gameMin.ok) {
