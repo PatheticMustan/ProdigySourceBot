@@ -64,7 +64,7 @@ const main = async () => {
 
     const embeds = [];
     
-    if (last.version !== version) {
+    if (last.version !== version || true) {
         // 11343081 #AD14E9, no matter where I go, I see her name
         embeds.push(createEmbedObject("Version", 11343081, last.version, version));
 
@@ -116,12 +116,12 @@ const main = async () => {
 }
 
 let pending = false;
-const interval = setInterval(async () => {
+/*const interval = setInterval(async () => {
     if (pending) return;
     pending = true;
     await main();
     pending = false;
-}, 10 * 60 * 1000); // runs every 10 minutes
-
+}, 10 * 60 * 1000);*/ // runs every 10 minutes
+main();
 // testing zone
 //(async () => {})()
