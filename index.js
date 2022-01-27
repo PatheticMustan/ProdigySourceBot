@@ -39,7 +39,7 @@ const main = async () => {
     try {
         status = JSON.parse(
                 (await (
-                    await fetch("https://play.prodigygame.com/play")
+                    await fetch("https://math.prodigygame.com/play?launcher=true")
                 ).text()).match(/(?<=gameStatusDataStr = ').+(?=')/)[0]
             );
         educationStatus = await (await fetch("https://api.prodigygame.com/education-api/status")).json();

@@ -1,7 +1,7 @@
 const fetch = require("node-fetch");
 
 (async () => {
-    const json = (await (await fetch("https://play.prodigygame.com/play")).text()).match(
+    const json = (await (await fetch("https://math.prodigygame.com/play?launcher=true")).text()).match(
             /(?<=gameStatusDataStr = ').+(?=')/
         )[0];
 
